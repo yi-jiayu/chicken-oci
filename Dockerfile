@@ -1,4 +1,4 @@
-FROM debian:stable
+FROM debian:stretch
 
 RUN apt-get update \
 	&& apt-get install -y \
@@ -14,19 +14,19 @@ RUN make PLATFORM=linux \
 	&& make PLATFORM=linux install \
 	&& make PLATFORM=linux check
 
-FROM debian:stable
+FROM debian:stretch
 
 RUN apt-get update \
-	&& apt-get install -y \
+	&& apt-get install -y --no-install-recommends \
 		build-essential \
-		gosu \
+		git \
+		ssh \
+		tar \
+		gzip \
+		ca-certificates \
 	&& rm -rf /var/lib/apt/lists/*
 
 COPY --from=0 /usr/local/bin /usr/local/bin
 COPY --from=0 /usr/local/lib /usr/local/lib
 COPY --from=0 /usr/local/include/chicken /usr/local/include/chicken
 COPY --from=0 /usr/local/share/chicken /usr/local/share/chicken
-
-RUN useradd -m chicken
-WORKDIR /home/chicken
-ENTRYPOINT gosu chicken bash
