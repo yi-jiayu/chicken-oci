@@ -19,7 +19,6 @@ FROM debian:stable
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		build-essential \
-		gosu \
 		git \
 		ssh \
 		tar \
@@ -31,7 +30,3 @@ COPY --from=0 /usr/local/bin /usr/local/bin
 COPY --from=0 /usr/local/lib /usr/local/lib
 COPY --from=0 /usr/local/include/chicken /usr/local/include/chicken
 COPY --from=0 /usr/local/share/chicken /usr/local/share/chicken
-
-RUN useradd -m chicken
-WORKDIR /home/chicken
-ENTRYPOINT gosu chicken bash
